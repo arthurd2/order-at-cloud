@@ -2,7 +2,6 @@
 class DocPaperTest extends PHPUnit_Framework_TestCase
 {
     protected $sizes = [350, 400, 450, 500, 550, 600];
-    //protected $sizes = [ 450, 500, 550, 600];
 
     public function setUp() {
         if (extension_loaded('Xdebug')) $this->markTestSkipped('Please disable Xdebug before executing these tests. Skipping tests.');
@@ -118,7 +117,7 @@ class DocPaperTest extends PHPUnit_Framework_TestCase
     /**
      * Varia Pareto com Maior Beneficio.
      * Comparar CB e numero de CVMP
-     * @ depends xxx
+     * @depends xxx
      */
     public function testNonDominantVsGreaterBenefit() {
         $paretoSwitch = [true, false];
