@@ -53,17 +53,3 @@ class RulesSensitiveToTheContextTest extends PHPUnit_Framework_TestCase
     }   
 }
 
-
-class RSCextendRule extends Rule{}
-class RSCimplementRule implements RuleSensitiveToTheContext{
-	static function isAllowed(& $vm){}
-    static function getWeight(){}
-    static function isEnable(){}
-    static function enable(){}
-    static function disable(){}
-}
-class RSCextImpRules extends Rule implements RuleSensitiveToTheContext{
-	static function isAllowed(& $vm){ 
-		return ($vm === 1);
-	}
-}

@@ -49,15 +49,3 @@ class RulesFreeOfContextTest extends PHPUnit_Framework_TestCase
 }
 
 
-class RFCextendRule extends Rule{}
-class RFCimplementRule implements RuleFreeOfContext{
-	static function isAllowed(& $vm , & $pm){}
-    static function isEnable(){}
-    static function enable(){}
-    static function disable(){}
-}
-class RFCextImpRules extends Rule implements RuleFreeOfContext{
-	static function isAllowed(& $vm , & $pm){ 
-		return ($vm === 1);
-	}
-}

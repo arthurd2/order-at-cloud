@@ -73,7 +73,7 @@ class QualifiersTest extends PHPUnit_Framework_TestCase
         $places = ['v1' => 'p1', 'v2' => 'p1', 'v3' => 'p2', 'v4' => 'p2', 'v5' => 'p3', ];
         $cvmp = Cvmp::buildCVmpByPlacements($places);
         $this->assertEquals(200, Qualifiers::getBenefit($cvmp), "");
-        unset($cvmp['qualifications']);
+        unset($cvmp[OC_TMP]);
         $cvmp['mirror'] = 11;
         $this->assertEquals(220, Qualifiers::getBenefit($cvmp), "");
     }
@@ -82,7 +82,6 @@ class QualifiersTest extends PHPUnit_Framework_TestCase
      * @depends testBenefit
      */
     public function testCostBenefit() {
-        global $realCvmp;
         Qualifiers::add('QUAtest');
         Qualifiers::add('QUAmirror');
         Costs::add('COSTextimp');
@@ -110,45 +109,26 @@ class QualifiersTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(False, "Should Raise a Exception from Fake evaluation QUAextimp ");
     }
 
-}
 
-class QUAext extends Qualifier
-{
-}
-class QUAimp implements InterfaceQualifier
-{
-    static function getWeight() {
-    }
-    static function evaluate(&$cvmp) {
-    }
-}
-class QUAfake extends Qualifier implements InterfaceQualifier
-{
-    static function evaluate(&$cvmp) {
-        return 2;
-    }
-}
-
-class QUAtest extends Qualifier implements InterfaceQualifier
-{
-    protected $weight = 2;
-    static function evaluate(&$cvmp) {
-        $return = [];
-        foreach ($cvmp['vmp'] as $vm => $pm) {
-            $return[$vm] = 2;
+    /**
+     * @depends testIdentifyFakeEvaluate
+     * @expectedException Exception
+     **/
+    public function testIncompleteAndCrapEvaluations() {
+        Qualifiers::add('QUAincomplete');
+        $places = ['v1' => 'p1', 'v2' => 'p1', 'v3' => 'p2', 'v4' => 'p2', 'v5' => 'p3', ];
+        $cvmp = Cvmp::buildCVmpByPlacements($places);
+        
+        $evals = @Qualifiers::getEvaluation($cvmp);
+        $this->assertEquals(2,$evals['v1'], "Value !match");
+        unset($evals['v1']);
+        foreach ($evals as $vm => $eval) {
+            $this->assertEquals(1,$eval, "Value of '$vm' !match");
         }
-        return $return;
     }
+
+
+
+
 }
 
-class QUAmirror extends Qualifier implements InterfaceQualifier
-{
-    
-    static function evaluate(&$cvmp) {
-        $return = [];
-        foreach ($cvmp['vmp'] as $vm => $pm) {
-            $return[$vm] = isset($cvmp['mirror']) ? $cvmp['mirror'] : 10;
-        }
-        return $return;
-    }
-}

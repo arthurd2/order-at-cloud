@@ -8,13 +8,13 @@ class PHPUnitTestListener implements PHPUnit_Framework_TestListener
         $this->time = microtime();
     }
     public function endTest(PHPUnit_Framework_Test $test, $time) {
-        $fmt =  "\nTime: %s ms Name: %s  (from: %s, to: %s)";
+        //$fmt =  "\nTime: %s ms Name: %s  (from: %s, to: %s)";
         $fmt =  "\nTime: %s ms Name: %s ";
         $current = microtime();
         $took = $current - $this->time;
         
         if($took > $this->timeLimit ) {
-            printf($fmt,$took,$test->getName(),$this->time,$current);
+            error_log(sprintf($fmt,$took,$test->getName(),$this->time,$current));
         }
         
     }

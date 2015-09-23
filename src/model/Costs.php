@@ -4,14 +4,23 @@ class Costs extends HandlerSingleton
     protected $mainCostClass = null;
     protected $interfaceClass = 'InterfaceCost';
     protected $extendsClass = 'Cost';
-
+    
     static function getCost(&$cvmp) {
+        if (isset($cvmp[OC_TMP]['cost'])) return $cvmp[OC_TMP]['cost'];
         $costs = Costs::getInstance();
         $class = $costs->mainCostClass;
-        $cost = (is_null($class))? 1 : $class::getCost($cvmp) ;
-
-        return $cost;
+        $cost = (is_null($class)) ? 1 : $class::getCost($cvmp);
+        $cvmp[OC_TMP]['cost'] = $cost;
         
+        return $cost;
+    }
+ 
+    static function getMaxCost() {
+        $costs = Costs::getInstance();
+        $class = $costs->mainCostClass;
+        $cost = (is_null($class)) ? PHP_INT_MAX : $class::$maxCost;
+        
+        return $cost;
     }
 
     static function add($class) {

@@ -2,7 +2,7 @@
 require_once 'src/model/Scenario.php';
 require_once 'src/model/Approximation.php';
 require_once "libs/vmwarephp/Bootstrap.php";
-ini_set('xdebug.max_nesting_level', 2000);
+ini_set('xdebug.max_nesting_level', 3000);
 $vmware = new \Vmwarephp\Vhost(getenv('VMHOST'), getenv('VMUSER'), getenv('VMPASS'));
 
 define('FNVM', "SeTIC_VMs.json");
@@ -24,7 +24,6 @@ foreach ($vms as $vm) {
 }
 $fmt = "\nVM-UUIDs(%s) | VM-Names(%s) | PMs(%s) | PossiblePlaces(%s) | APR(%s)\n";
 echo sprintf($fmt,count($vms),count($tmp),count($pms),array_sum($scenario['rpm']),array_sum($scenario['rpm'])/(count($tmp)*count($pms)));
-
 
 $semConstraint = Approximation::calcularComRegras($scenario);
 echo "With Rules:".$semConstraint.PHP_EOL;
@@ -111,6 +110,8 @@ function placementIsValid($vm,$pm){
 
 
 function loadVMs($vmware) {
+    //https://www.vmware.com/support/developer/vc-sdk/visdk41pubs/ApiReference/memory_counters.html
+    //https://www.vmware.com/support/developer/vc-sdk/visdk41pubs/ApiReference/vim.PerformanceManager.html
     //https://www.vmware.com/support/developer/vc-sdk/visdk41pubs/ApiReference/vim.VirtualMachine.html
     //http://pubs.vmware.com/vsphere-60/index.jsp?topic=/com.vmware.wssdk.apiref.doc/index.html&single=true&__utma=207178772.1811249502.1438681066.1438681066.1438681066.1&__utmb=207178772.0.10.1438681066&__utmc=207178772&__utmx=-&__utmz=207178772.1438681066.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)&__utmv=-&__utmk=104578819
     //'name', 'summary','network','datastore', 'config'
@@ -132,7 +133,9 @@ function loadVMs($vmware) {
 		if ($vm->runtime->powerState != 'poweredOn') continue;
 
         //$newVM->cpus = $vm->summary->config->numCpu
+        $newVM['host'] = $vm->runtime->host->name;
         $newVM['memory'] = $vm->config->hardware->memoryMB;
+        $newVM['used_memory'] = $vm->summary->quickStats->hostMemoryUsage;
         //$newVM['status'] = $vm->runtime->onlineStandby;
         
         //$newVM['paused'] = $vm->runtime->paused;
@@ -159,7 +162,6 @@ function loadVMs($vmware) {
        
     //Salvar no arquivo
     file_put_contents(FNVM, $json);
-    return $filename;
 }
 
 function loadPMs($vmware) {
@@ -177,7 +179,7 @@ function loadPMs($vmware) {
 
         $eta = intval((time()-$start)/$count)*($num-$count+1);
         $spend = time()-$start;
-        echo date(DATE_RFC2822)." | $num/". $count++ ." | ETA: ". $eta .'s | Spend: '.$spend.'s | '.$newVM['name']."\n";
+        echo date(DATE_RFC2822)." | $num/". $count++ ." | ETA: ". $eta .'s | Spend: '.$spend.'s | '.$newPM['name']."\n";
 
         //$newPM['uuid'] = $pm->config->uuid
         $newPM['networks'] = array();

@@ -14,14 +14,29 @@ class Qualifier extends Singleton
         $class = get_called_class();
         $evaluation = $class::evaluate($cvmp);
         //TODO test values > 0 & <=2
-        //TODO test existance of all vms 
-        if ($cvmp['nvms'] == count($evaluation)) {
-            //$cvmp['qualifications']['values'] = $evaluation;
-            return $evaluation;
-        } 
-        else {
+        
+        //Testing is Value is an array
+        if (!is_array($evaluation)){
             Qualifiers::del($class);
-            throw new Exception("Num of Evaluations from class '$class' is different from number of VMs.", 1);
+            throw new Exception("Evaluations sent from class '$class' is not an Array. Class Removed.", 1);
         }
+
+        $return = [];
+
+        //Selecting just the vms evaluations, cutting possible garbage
+        foreach ($cvmp['vmp'] as $vm => $pm) {
+            $return[$vm] = (isset($evaluation[$vm]))?$evaluation[$vm]:1;
+            unset($evaluation[$vm]);
+        }
+
+        //Informing about the garbage found
+        if (count($evaluation) > 0) {
+            Qualifiers::del($class);
+            throw new Exception("Class '$class' is putting crap in the evaluation result: \n".print_r($evaluation,true), 1);
+        }
+
+        return $return;
     }
+
+    static function load(){}
 }

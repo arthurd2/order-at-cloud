@@ -238,11 +238,12 @@ class Approximation
     static function realTreeSearchApproachBackEnd(&$placements, &$nvms, &$vms, &$level = 0, &$usageVector = array(), &$stateCounter = 0) {
         
         //Interects foreach possible placements of that VM
+        
         foreach ($placements[$level] as $p) {
             list($vmName, $pmName) = explode(':', $p);
-            
+            if($level == 0 ) echo "$vmName, $pmName";
             //Checks if the PM is not full
-            if ($usageVector[$pmName] > $vms[$vmName]['memory']) {
+            if ($usageVector[$pmName] > $vms[$vmName]['used_memory']) {
                 
                 //Check if the last VM to host
                 if ($level >= $nvms - 1) {
@@ -251,13 +252,12 @@ class Approximation
                     $stateCounter++;
                 } 
                 else {
-                    
                     //Prepare to drilldown
                     $level++;
-                    $usageVector[$pmName]-= $vms[$vmName]['memory'];
+                    $usageVector[$pmName]-= $vms[$vmName]['used_memory'];
                     Approximation::realTreeSearchApproachBackEnd($placements, $nvms, $vms, $level, $usageVector, $stateCounter);
                     $level--;
-                    $usageVector[$pmName]+= $vms[$vmName]['memory'];
+                    $usageVector[$pmName]+= $vms[$vmName]['used_memory'];
                 }
             }
         }
