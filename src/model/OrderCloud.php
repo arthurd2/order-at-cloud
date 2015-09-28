@@ -4,7 +4,7 @@ class OrderCloud
     private $rules;
     private $qualifiers;
     private $costs;
-    private static $stop = false;
+    protected static $stop = false;
     
     public function __construct(&$currentCvmp) {
         Cache::$realCvmp = & $currentCvmp;
@@ -19,8 +19,9 @@ class OrderCloud
     }
     
     public function organize(&$baseCvmp, &$ignoreVMs = [], $isMainInteration = true) {
+        $class = get_called_class();
         $pareto = [];
-        if (count($ignoreVMs) >= $baseCvmp['nvms'] or OrderCloud::$stop) return $baseCvmp;
+        if (count($ignoreVMs) >= $baseCvmp['nvms'] or $class::$stop) return $baseCvmp;
         
         //Select Lower VM from the Rank
         $lowVM = $this->selectLowerVm($baseCvmp, $ignoreVMs);
@@ -32,7 +33,7 @@ class OrderCloud
         $ignoreVMs[$lowVM] = $lowVM;
         foreach ($cvmps as $key => $cvmp) {
             Counter::$scenarios++;
-            if (!OrderCloud::$stop and $this->isNonDominanted($baseCvmp, $cvmp)) {
+            if (!$class::$stop and $this->isNonDominanted($baseCvmp, $cvmp)) {
                 Counter::$pareto++;
                 $pareto[] = $this->organize($cvmp, $ignoreVMs, false);
             }
@@ -53,6 +54,8 @@ class OrderCloud
     }
     
     public function getCvmpWithMaxCostBenefit(&$pareto) {
+        if(count($pareto) == 1) return  array_pop($pareto);
+
         $cvmpMax = array_pop($pareto);
         $cbMax = Qualifiers::getCostBenefit($cvmpMax);
         

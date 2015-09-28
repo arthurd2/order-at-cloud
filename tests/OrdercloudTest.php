@@ -49,8 +49,8 @@ class OrderCloudTest extends PHPUnit_Framework_TestCase
     public function testSelectLoweVMWithIgnoreVmFull() {
         $places = ['v1' => 'p1', 'v2' => 'p1', 'v3' => 'p2', 'v4' => 'p2', 'v5' => 'p3', ];
         $cvmp = Cvmp::buildCVmpByPlacements($places);
-        
-        $oc = new OrderCloud($x=null);
+        $x=null;
+        $oc = new OrderCloud($x);
         $ivm = ['v1','v2','v3','v4','v5'];
         $oc->selectLowerVm($cvmp,$ivm);
     }
@@ -129,7 +129,6 @@ class OrderCloudTest extends PHPUnit_Framework_TestCase
         Cache::$cache->delete('load_test');
         $places = ['v1' => 'p1', 'v2' => 'p1', 'v3' => 'p2', 'v4' => 'p2', 'v5' => 'p3', ];
         $cvmp0 = Cvmp::buildCVmpByPlacements($places);
-
 
         $this->assertFalse(Cache::$cache->get('load_test'));
         $oc = new OrderCloud($cvmp0);

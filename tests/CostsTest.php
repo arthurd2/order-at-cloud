@@ -47,7 +47,11 @@ class CostsTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(2, Costs::getCost($x), "");
     }
     
-    //TODO testar del de Costs, ver se substitui mesmo.
-    
-}
 
+    public function testGetMaxCost() {
+        $max = Costs::getMaxCost();
+        $this->assertequals(PHP_INT_MAX, $max, "Default Cost is wrong");
+    }
+        
+}
+    //TODO testar del de Costs, ver se substitui mesmo.

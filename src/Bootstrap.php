@@ -13,7 +13,7 @@ define('OC_STORE','classes');
 
 
 
-$folders = ['src','src/basics', 'src/interfaces','src/helpers','src/model', 'src/rules', 'src/qualifiers', 'src/costs'];
+$folders = ['src','src/basics', 'src/interfaces','src/model'];
 foreach ($folders as $folder) 
 	foreach (glob("$folder/*.php") as $filename) 
 		require_once "$filename";
