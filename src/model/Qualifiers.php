@@ -10,7 +10,7 @@ class Qualifiers extends HandlerSingleton {
     	}
   		return $cvmp[OC_TMP]['benefit'];
     }
-    static function getEvaluation(& $cvmp){
+    static function getEvaluation( &$cvmp){
         if (!isset($cvmp[OC_TMP]['values'])){
         	$qualifiers = Qualifiers::getClasses();
             foreach ($cvmp['vmp'] as $vm => $pm) 
@@ -22,7 +22,7 @@ class Qualifiers extends HandlerSingleton {
                     $cvmp[OC_TMP]['values'][$vm] *=  pow($eval, $w);
                 }
         	}
-        }
+        }        
         return $cvmp[OC_TMP]['values'];
     }
 

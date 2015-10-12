@@ -11,11 +11,10 @@ define('OC_ND_HIGH_CONVERGENCE',true);
 
 define('OC_STORE','classes');
 
-
-
-$folders = ['src','src/basics', 'src/interfaces','src/model'];
+$root = __DIR__;
+$folders = ['/','basics', 'interfaces','model'];
 foreach ($folders as $folder) 
-	foreach (glob("$folder/*.php") as $filename) 
+	foreach (glob("$root/$folder/*.php") as $filename) 
 		require_once "$filename";
 
 $cache = new Memcached;
