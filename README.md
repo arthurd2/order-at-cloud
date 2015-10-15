@@ -5,6 +5,29 @@ It gives you the possibility to easily implement Rules, Qualifiers and Costs in 
 
 It will receive the current placements of your Cloud (current Scenario) and, based on your customization, it will propose a better Scenario.
 
+## How to use it?
+1. Download the OrderAtCloud.phar
+2. Add in you Code
+```php
+	//Load the Framework
+	require_once "OrderAtCloud.phar";
+
+	//Load your Rules, Qualifiers and/or Costs
+	require_once "YourRules.php";
+	require_once "YourQualifiers.php";
+	require_once "YourCosts.php";
+	
+	//Build your Scenario
+	$scenario = [];
+	Cvmp::addVm($scenario, 'VM1','PM1');
+	Cvmp::addVm($scenario, 'VM2','PM1');
+	Cvmp::addVm($scenario, 'VM3','PM2');
+	Cvmp::addVm($scenario, 'VM4','PM2');
+	
+	//Do the Magic!
+	$oc = new OrderCloud($scenario);
+	$bestScenario = $oc->organize($scenario);
+```
 
 
 ## The Concept Behind
