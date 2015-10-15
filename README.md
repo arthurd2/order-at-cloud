@@ -6,7 +6,7 @@ It gives you the possibility to easily implement Rules, Qualifiers and Costs in 
 It will receive the current placements of your Cloud (current Scenario) and, based on your customization, it will propose a better Scenario.
 
 ## How to use it?
-1. Download the OrderAtCloud.phar
+1. Download the [OrderAtCloud.phar](https://github.com/arthurd2/order-at-cloud/raw/master/build/OrderAtCloud.phar)
 2. Add in you Code
 ```php
 	//Load the Framework
