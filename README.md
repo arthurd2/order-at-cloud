@@ -7,8 +7,7 @@ It will receive the current placements of your Cloud (current Scenario) and, bas
 
 ## How to use it?
 1. Download the [OrderAtCloud.phar](https://github.com/arthurd2/order-at-cloud/raw/master/build/OrderAtCloud.phar)
-2. Follow the Example
-```php
+2. Follow the Example ```php
 	//Load the Framework
 	require_once "OrderAtCloud.phar";
 
