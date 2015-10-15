@@ -7,7 +7,9 @@ It will receive the current placements of your Cloud (current Scenario) and, bas
 
 ## How to use it?
 1. Download the [OrderAtCloud.phar](https://github.com/arthurd2/order-at-cloud/raw/master/build/OrderAtCloud.phar)
-2. Follow the Example ```php
+2. Follow the example below
+3. Enjoy the Cloud
+```php
 	//Load the Framework
 	require_once "OrderAtCloud.phar";
 
@@ -27,7 +29,6 @@ It will receive the current placements of your Cloud (current Scenario) and, bas
 	$oc = new OrderCloud($scenario);
 	$bestScenario = $oc->organize($scenario);
 ```
-3. Enjoy the Cloud
 
 ## The Concept Behind
 ### It's elements
