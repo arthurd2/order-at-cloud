@@ -4,11 +4,16 @@ class OrderCloud
     private $rules;
     private $qualifiers;
     private $costs;
+    private $debug = false;
     protected static $stop = false;
     
-    public function __construct(&$currentCvmp) {
+    public function __construct(&$currentCvmp,$debug = false) {
+        $this->debug = $debug;
         Cache::$realCvmp = & $currentCvmp;
         $this->executeLoadClasses();
+        if ($this->debug) {
+            $this->handlerStatus();
+        }
     }
     
     private function executeLoadClasses() {
@@ -128,5 +133,20 @@ class OrderCloud
         }
         
         return (OC_ND_HIGH_CONVERGENCE) ? ($count > 0) : true;
+    }
+
+    public function handlerStatus()
+    {
+        $fmt = 'Class[%s] %s[%s]';
+        error_log("\nCosts:");
+        error_log("Main Cost Class[".Costs::getMainCost().']');
+        foreach (Costs::getClasses() as $class) error_log(sprintf($fmt,$class,'Cost',$class::getMaxCost()));
+        error_log("\nQualifiers:");
+        foreach (Qualifiers::getClasses() as $class) error_log(sprintf($fmt,$class,'Weight',$class::getWeight()));
+        error_log("\nRules Free Of Context:");
+        foreach (RulesFreeOfContext::getClasses() as $class) error_log(sprintf($fmt,$class,'isValid',$class::isEnable()));
+        error_log("\nRules Sensitive To The Context:");
+        foreach (RulesSensitiveToTheContext::getClasses() as $class) error_log(sprintf($fmt,$class,'isValid',$class::isEnable()));
+        echo PHP_EOL;
     }
 }

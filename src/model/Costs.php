@@ -36,4 +36,15 @@ class Costs extends HandlerSingleton
         $costs->mainCostClass = array_pop($classes);
         return true;
     }
+
+    static function setMainCost($class) {
+        if (!class_exists($class)) return false;
+        $costs = Costs::getInstance();
+        $costs->mainCostClass = $class;
+        return true;
+    }
+    static function getMainCost() {
+        $costs = Costs::getInstance();
+        return $costs->mainCostClass;
+    }
 }
