@@ -11,9 +11,10 @@
     </testsuite>
   </testsuites>
   <filter>
-    <whitelist processUncoveredFilesFromWhitelist="true">
+    <whitelist processUncoveredFilesFromWhitelist="false">
       <directory suffix=".php">src/</directory>
     </whitelist>
+
   </filter>
   <logging>
     <log target="coverage.xml" type="coverage-clover"/>
