@@ -51,14 +51,13 @@ class OrderCloud
         $sCvmp = $this->getCvmpWithMaxCostBenefit($pareto);
         
         if ($isMainInteration) {
-            
             $class::updateIgnoreVMs($ignoreVMs,$sCvmp,$lowVM);
             $sCvmp = $this->organize($sCvmp, $ignoreVMs, true);
         }
         return $sCvmp;
     }
     
-    public function updateIgnoreVMs(&$ignoreVMs,&$sCvmp,$lowVM) {
+    public function updateIgnoreVMs(&$ignoreVMs, &$sCvmp, $lowVM, &$extra = null) {
             $newLowVM = $this->selectLowerVm($sCvmp, $ignoreVMs);
             $ignoreVMs[$newLowVM] = $newLowVM;
     }
