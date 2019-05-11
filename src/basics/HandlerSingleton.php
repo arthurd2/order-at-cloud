@@ -2,32 +2,30 @@
 class HandlerSingleton {
 	protected $classes;
 	protected static $instance = [];
-    protected $interfaceClass = 'PHPUnit_Framework_Test';
-    protected $extendsClass = 'PHPUnit_Framework_TestCase';
+	protected $interfaceClass = 'PHPUnit_Framework_Test';
+	protected $extendsClass = 'PHPUnit_Framework_TestCase';
 
 
 	protected function __construct(){
 		$this->classes = [];
 	}
 
-    public static function getInstance()
-    {
-    	$called = get_called_class();
-        if ( !isset($called::$instance[$called])){
-            $called::$instance[$called] = new $called();
+	public static function getInstance()
+	{
+		$called = get_called_class();
 
-        }
-        
-        return $called::$instance[$called];
-    }
+		if ( !isset($called::$instance[$called])) $called::$instance[$called] = new $called();
+
+		return $called::$instance[$called];
+	}
 
 	public static function add($class){
 		$called = get_called_class();
 		$instance = $called::getInstance();
 		$interfaceClass = $instance->interfaceClass;
-        $extendsClass = $instance->extendsClass;
-        
-        $implements = @class_implements($class);
+		$extendsClass = $instance->extendsClass;
+
+		$implements = @class_implements($class);
 		if (class_exists($class) and in_array($interfaceClass, $implements) and is_subclass_of($class, $extendsClass)){
 			$instance->classes[$class] = $class;
 		}else{
