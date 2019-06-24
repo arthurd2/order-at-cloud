@@ -61,3 +61,6 @@ These assessments will enable the comparison and, consequently, selection of Sce
 #### Cost
 The cost is a function which quantifies the implementation cost between two Scenarios, a root and a target scenario.
 Its values disregard units and can vary from the number of migrations to the required resource to implement the target scenario.
+
+## Experiments
+You can find our experiments in our [Lab's Repo](https://github.com/arthurd2/order-at-cloud-lab).
