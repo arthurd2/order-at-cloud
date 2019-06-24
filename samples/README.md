@@ -13,3 +13,6 @@ Here you will find the following samples:
 		* RscMaxCost
 		* RscMemoryAvailability
 * Qualifiers
+	* QuaConsolidatePm
+	* QuaDistributeServices
+	* QuaDistributeStoragePool
